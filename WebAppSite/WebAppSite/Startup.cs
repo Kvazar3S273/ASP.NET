@@ -1,5 +1,9 @@
+//using FluentValidation;
+//using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -7,6 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAppSite.Domain;
+using WebAppSite.Domain.Entities.Identity;
+using WebAppSite.Models;
 
 namespace WebAppSite
 {
@@ -22,6 +29,20 @@ namespace WebAppSite
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AppEFContext>(options =>
+               options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            
+            services.AddIdentity<AppUser, AppRole>(options => {
+                options.Stores.MaxLengthForKeys = 128;
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 5;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+            })
+               .AddEntityFrameworkStores<AppEFContext>()
+               .AddDefaultTokenProviders();
+
             services.AddControllersWithViews();
         }
 

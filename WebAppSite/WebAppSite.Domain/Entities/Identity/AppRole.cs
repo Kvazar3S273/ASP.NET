@@ -9,6 +9,7 @@ namespace WebAppSite.Domain.Entities.Identity
 {
     public class AppRole : IdentityRole<long>
     {
-        public virtual ICollection<AppUserRole> UserRole { get; set; }
+        public virtual ICollection<AppUserRole> UserRoles { get; set; }
+        //public object UserRoles { get; internal set; }
     }
 }
