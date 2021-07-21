@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebAppSite.Domain.Configuration.Catalog;
 using WebAppSite.Domain.Configuration.Identity;
+using WebAppSite.Domain.Entities.Catalog;
 using WebAppSite.Domain.Entities.Identity;
 
 namespace WebAppSite.Domain
@@ -20,6 +22,7 @@ namespace WebAppSite.Domain
         {
 
         }
+        public DbSet<Animal> Animals { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -43,9 +46,9 @@ namespace WebAppSite.Domain
             //});
             #endregion
 
-            //#region Catalog
-            //builder.ApplyConfiguration(new AnimalConfiguration());
-            //#endregion
+            #region Catalog
+            builder.ApplyConfiguration(new AnimalConfiguration());
+            #endregion
         }
     }
 }

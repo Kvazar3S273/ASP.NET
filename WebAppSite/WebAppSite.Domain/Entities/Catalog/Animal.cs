@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace WebAppSite.Models
+namespace WebAppSite.Domain.Entities.Catalog
 {
-    public class AnimalsViewModel
+    public class Animal : BaseEntity<long>
     {
-        public long Id { get; set; }
         public string Name { get; set; }
-        public DateTime BirthDay { get; set; }
         public decimal Price { get; set; }
+        public DateTime DateBirth { get; set; }
         public string Image { get; set; }
     }
 }
