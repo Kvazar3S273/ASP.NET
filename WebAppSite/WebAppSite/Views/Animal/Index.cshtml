@@ -3,6 +3,7 @@
     ViewData["Title"] = "Анімали";
 }
 <h1>Список анімалів</h1>
+<a asp-action="Create" class="btn btn-success mb-3">Додати нового анімала</a>
 <table class="table table-striped table-secondary">
     <thead>
         <tr>
@@ -19,7 +20,7 @@
             <tr>
                 <th scope="row">@item.Id</th>
                 <td>@item.Name</td>
-                <td>@item.BirthDay</td>
+                <td>@item.BirthDay.ToLongDateString()</td>
                 <td>@item.Price</td>
                 <td>@item.Image</td>
             </tr>
