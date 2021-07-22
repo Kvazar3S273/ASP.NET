@@ -55,5 +55,59 @@ namespace WebAppSite.Controllers
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public IActionResult Edit(long id)
+        {
+            var result = _context.Animals.FirstOrDefault(a => a.Id == id);
+            return View(new AnimalCreateViewModel()
+            {
+                Name = result.Name,
+                BirthDay = result.DateBirth.ToString(),
+                Image = result.Image,
+                Price = result.Price
+            });
+        }
+        [HttpPost]
+        public IActionResult Edit(long id, AnimalCreateViewModel model)
+        {
+            DateTime dt = DateTime.Parse(model.BirthDay, new CultureInfo("uk-UA"));
+            if (ModelState.IsValid)
+            {
+                var result = _context.Animals.FirstOrDefault(a => a.Id == id);
+                result.Name = model.Name;
+                result.DateBirth = dt;
+                result.Image = model.Image;
+                result.Price = model.Price;
+                _context.SaveChanges();
+            };
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        [ActionName("Delete")]
+        public IActionResult ConfirmDelete(long id)
+        {
+            var selectedItem = _context.Animals.FirstOrDefault(si => si.Id == id);
+            if (selectedItem != null)
+            {
+                return View(selectedItem);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public IActionResult Delete(long id)
+        {
+            var deletedItem = _context.Animals.FirstOrDefault(di => di.Id == id);
+            if (deletedItem != null)
+            {
+                _context.Animals.Remove(deletedItem);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return NotFound();
+        }
+
     }
 }

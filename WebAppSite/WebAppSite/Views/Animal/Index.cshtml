@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<AnimalsViewModel>
-@{ 
+@{
     ViewData["Title"] = "Анімали";
 }
 <h1>Список анімалів</h1>
@@ -12,6 +12,8 @@
             <th scope="col">День народження</th>
             <th scope="col">Ціна</th>
             <th scope="col">Зображення</th>
+            <th scope="col">Дія</th>
+
         </tr>
     </thead>
     <tbody>
@@ -23,9 +25,17 @@
                 <td>@item.BirthDay.ToLongDateString()</td>
                 <td>@item.Price</td>
                 <td>@item.Image</td>
+                <td>
+                    <a asp-action="Edit" class="fa fa-pencil text-info cursor-pointer" asp-controller="Animal" asp-route-id="@item.Id"></a>
+                    <a asp-action="Delete" class="fa fa-times text-danger cursor-pointer" asp-controller="Animal" asp-route-id="@item.Id"></a>
+                </td>
             </tr>
         }
 
 
     </tbody>
 </table>
+
+@section StylesAwesome{
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+}

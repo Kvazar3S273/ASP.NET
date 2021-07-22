@@ -1,0 +1,44 @@
+﻿@model WebAppSite.Domain.Entities.Catalog.Animal
+
+@{
+    ViewData["Title"] = "Видалити анімала";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h3>Ви справді хочете видалити цього анімала?</h3>
+<div>
+
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateBirth)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateBirth)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Image)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Image)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="submit" value="Видалити анімала" class="btn btn-danger" /> |
+        <a asp-action="Index">Назад до списку анімалів</a>
+    </form>
+</div>
