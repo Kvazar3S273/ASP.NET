@@ -22,12 +22,28 @@
             <tr>
                 <th scope="row">@item.Id</th>
                 <td>@item.Name</td>
-                <td>@item.BirthDay.ToLongDateString()</td>
+                <td>@item.BirthDay</td>
                 <td>@item.Price</td>
-                <td>@item.Image</td>
                 <td>
-                    <a asp-action="Edit" class="fa fa-pencil text-info cursor-pointer" asp-controller="Animal" asp-route-id="@item.Id"></a>
-                    <a asp-action="Delete" class="fa fa-times text-danger cursor-pointer" asp-controller="Animal" asp-route-id="@item.Id"></a>
+                    <img src="@item.Image" width="150" alt="img" /></td>
+                
+                <td class="align-middle text-left" style="font-size: 20px">
+                    
+                    <a href="#" class="text-info text-decoration-none">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="text-danger text-decoration-none">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    </a>
+
+                    @*<a asp-action="Edit"
+           class="fa fa-pencil-square-o text-info text-decoration-none cursor-pointer"
+           asp-controller="Animal"
+           asp-route-id="@item.Id"></a>
+        <a asp-action="Delete"
+           class="fa fa-trash-o text-danger text-decoration-none cursor-pointer"
+           asp-controller="Animal"
+           asp-route-id="@item.Id"></a>*@
                 </td>
             </tr>
         }
@@ -35,6 +51,52 @@
 
     </tbody>
 </table>
+
+<div class="modal" tabindex="-1" id="modalDelete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Видалення</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Ви дійсно бажаєте видалити запис?</p>
+                <div class="lds-hourglass"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Скасувати</button>
+                <button type="button" class="btn btn-primary" id="btnDeleteAnimal">Видалити</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts { 
+    <script src="~/lib/axios/axios.min.js"></script>
+<script>
+    $(function () {
+        var deleteItem;
+        $("[data-delete-animal]").on("click", function (e) {
+            deleteItem = $(this).closest('a');
+            e.preventDefault();
+            $("#modalDelete").modal("show");
+            console.log(deleteItem.attr("data-id"));
+        });
+
+        $("#btnDeleteAnimal").on("click", function () {
+            var url = `/animal/delete/${deleteItem.attr("data-id")}`;
+            axios.post(url)
+                .then(function (result) {
+                deleteItem.closest("tr").remove();
+                $("#modalDelete").modal("hide");
+
+                //console.log(result);
+            });
+
+        });
+    });
+</script>
+}
 
 @section StylesAwesome{
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">

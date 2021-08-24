@@ -10,6 +10,15 @@
         "css/bootstrap-datepicker.min.css",
         "locales/bootstrap-datepicker.uk.min.js"
       ]
+    },
+    {
+      "library": "bootstrap@5.1.0",
+      "destination": "wwwroot/lib/bootstrap/"
     }
-  ]
+  ,
+{
+  "library": "axios@0.21.1",
+  "destination": "wwwroot/lib/axios/"
+}
+]
 }

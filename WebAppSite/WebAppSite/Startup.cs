@@ -49,6 +49,8 @@ namespace WebAppSite
                 .AddFluentValidation();
 
             services.AddTransient<IValidator<AnimalCreateViewModel>, AnimalCreateValidator>();
+
+            services.AddAutoMapper(typeof(AnimalProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
