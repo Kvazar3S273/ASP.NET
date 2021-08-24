@@ -4,13 +4,12 @@
     ViewData["Title"] = "Додати анімала";
 }
 
-<h1>@ViewData["Title"]</h1>
-
+<h1 class="text-center">@ViewData["Title"]</h1>
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+    <div class="offset-md-3 col-md-6">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -29,9 +28,29 @@
             </div>
             <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
+                @*<input asp-for="Image" class="form-control" />*@
+                
+                <div class="input-group mb-3">
+                <input asp-for="Image" type="file" class="form-control">
+                <label class="input-group-text" for="Image">Upload</label>
+                </div>
+
+                @*<div class="input-group mb-3">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile02">
+                        <label class="custom-file-label"
+                               for="inputGroupFile02"
+                               aria-describedby="inputGroupFileAddon02">Оберіть зображення</label>
+                    </div>
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="inputGroupFileAddon02">Upload</span>
+                    </div>
+                </div>*@
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
+            
+
+            
             <div class="form-group">
                 <input type="submit" value="Створити" class="btn btn-primary" />
             </div>
@@ -39,7 +58,7 @@
     </div>
 </div>
 
-<div>
+<div class="text-center">
     <a asp-action="Index">Повернутися до списку</a>
 </div>
 

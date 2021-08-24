@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -28,7 +29,7 @@ namespace WebAppSite.Models
         public decimal Price { get; set; }
 
         [Display(Name="Зображення")]
-        public string Image { get; set; }
+        public IFormFile Image { get; set; }
     }
 
     public class AnimalCreateValidator : AbstractValidator<AnimalCreateViewModel>

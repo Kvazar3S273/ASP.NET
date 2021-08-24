@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAppSite.Domain;
@@ -65,6 +67,15 @@ namespace WebAppSite
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
+
+            var dir = Path.Combine(Directory.GetCurrentDirectory(), "images");
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(dir),
+                RequestPath="/images"
+            });
 
             app.UseRouting();
 
