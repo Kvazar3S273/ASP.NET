@@ -45,7 +45,7 @@ namespace WebAppSite.Controllers
             }
         }
 
-        public IActionResult Index()
+        public IActionResult Index(SearchHomeIndexModel search)
         {
             var model = _context.Animals
                 .Select(x => _mapper.Map<AnimalsViewModel>(x))

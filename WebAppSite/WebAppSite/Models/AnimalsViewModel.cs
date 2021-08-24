@@ -45,4 +45,13 @@ namespace WebAppSite.Models
         }
     }
     #endregion
+
+    #region Search Animal
+    public class SearchHomeIndexModel
+    {
+        public string Name { get; set; }
+
+    }
+    #endregion
+
 }
