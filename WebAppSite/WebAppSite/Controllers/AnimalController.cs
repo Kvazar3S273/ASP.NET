@@ -45,21 +45,31 @@ namespace WebAppSite.Controllers
             }
         }
 
-        public IActionResult Index(SearchHomeIndexModel search)
+        public IActionResult Index(SearchHomeIndexModel search, int page = 1)
         {
-            var model = _context.Animals
+            int showItems = 5;
+            var query = _context.Animals.AsQueryable();
+            if(!string.IsNullOrEmpty(search.Name))
+            {
+                query = query.Where(x => x.Name.Contains(search.Name));
+            }
+            HomeIndexModel model = new HomeIndexModel();
+
+            // кількість записів, які знайшли в загальному
+            int countItems = query.Count();
+            var pageCount = (int)Math.Ceiling(countItems/(double)showItems);
+            if (pageCount == 0) pageCount = 1;
+
+            int skipItems = (page - 1) * showItems;
+            query = query.Skip(skipItems).Take(showItems);
+
+            model.Animals = query
                 .Select(x => _mapper.Map<AnimalsViewModel>(x))
                 .ToList();
-
-            //List<AnimalsViewModel> model =
-            //    _context.Animals.Select(x => new AnimalsViewModel
-            //    {
-            //        Id = x.Id,
-            //        Name = x.Name,
-            //        Price = x.Price,
-            //        Image = x.Image,
-            //        BirthDay = x.DateBirth
-            //    }).ToList();
+            model.Search = search;
+            model.Page = page;
+            model.PageCount = pageCount;
+           
             
             return View(model);
         }

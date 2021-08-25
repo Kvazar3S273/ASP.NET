@@ -52,6 +52,14 @@ namespace WebAppSite.Models
         public string Name { get; set; }
 
     }
+
+    public class HomeIndexModel
+    {
+        public int Page { get; set; }
+        public int PageCount { get; set; }
+        public List<AnimalsViewModel> Animals { get; set; }
+        public SearchHomeIndexModel Search { get; set; }
+    }
     #endregion
 
 }
