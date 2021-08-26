@@ -47,7 +47,7 @@ namespace WebAppSite.Controllers
 
         public IActionResult Index(SearchHomeIndexModel search, int page = 1)
         {
-            int showItems = 3;
+            int showItems = 7;
             var query = _context.Animals.AsQueryable();
             if(!string.IsNullOrEmpty(search.Name))
             {
