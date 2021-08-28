@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Bogus;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,10 +19,12 @@ namespace WebAppSite.Controllers
     {
         private readonly AppEFContext _context;
         private readonly IMapper _mapper;
-        public AnimalController(AppEFContext context, IMapper mapper)
+        private IHostEnvironment _host;
+        public AnimalController(AppEFContext context, IMapper mapper, IHostEnvironment host)
         {
             _context = context;
             _mapper = mapper;
+            _host = host;
             //GenerateAnimal();
         }
 
@@ -69,8 +73,6 @@ namespace WebAppSite.Controllers
             model.Search = search;
             model.Page = page;
             model.PageCount = pageCount;
-           
-            
             return View(model);
         }
         [HttpGet]
@@ -113,17 +115,27 @@ namespace WebAppSite.Controllers
         [HttpGet]
         public IActionResult Edit(long id)
         {
+            AnimalCreateViewModel animal = new AnimalCreateViewModel();
             var result = _context.Animals.FirstOrDefault(a => a.Id == id);
-            return View(new AnimalCreateViewModel()
+            if (result.Image != null)
             {
-                Name = result.Name,
-                BirthDay = result.DateBirth.ToString(),
-                //Image = result.Image,
-                Price = result.Price
-            });
+                var name = Path.GetFileName(result.Image);
+                var dir = Path.Combine(Directory.GetCurrentDirectory(), "images");
+                var filePath = Path.Combine(dir, name);
+
+                using (var stream = System.IO.File.OpenRead($"{filePath}"))
+                {
+                    var resultImage = new FormFile(stream, 0, stream.Length, null, Path.GetFileName(stream.Name));
+                    animal.Name = result.Name;
+                    animal.Price = result.Price;
+                    animal.BirthDay = result.DateBirth.ToString();
+                    animal.Image = resultImage;
+                }
+            }
+            return View(animal);
         }
         [HttpPost]
-        public IActionResult Edit(long id, AnimalCreateViewModel model)
+        public async Task<IActionResult> Edit(long id, AnimalCreateViewModel model)
         {
             DateTime dt = DateTime.Parse(model.BirthDay, new CultureInfo("uk-UA"));
             if (ModelState.IsValid)
@@ -133,6 +145,26 @@ namespace WebAppSite.Controllers
                 result.DateBirth = dt;
                 //result.Image = model.Image;
                 result.Price = model.Price;
+                string fileName = string.Empty;
+                if(model.Image!=null)
+                {
+                    var ext = Path.GetExtension(model.Image.FileName);
+                    fileName = Path.GetRandomFileName() + ext;
+                    var directory = Path.Combine(Directory.GetCurrentDirectory(), "images");
+                    var pathFile = Path.Combine(directory, fileName);
+                    using(var stream = System.IO.File.Create(pathFile))
+                    {
+                        await model.Image.CopyToAsync(stream);
+                    }
+                    var beforeImg = result.Image;
+                    string folder = "\\images\\";
+                    string path = _host.ContentRootPath + folder + beforeImg;
+                    if(System.IO.File.Exists(path))
+                    {
+                        System.IO.File.Delete(path);
+                    }
+                    result.Image = fileName;
+                }
                 _context.SaveChanges();
             };
             return RedirectToAction("Index");
@@ -154,9 +186,15 @@ namespace WebAppSite.Controllers
         public IActionResult Delete(long id)
         {
             var deletedItem = _context.Animals.FirstOrDefault(di => di.Id == id);
-            //var deletedItem = _context.Animals.SingleOrDefault(di => di.Id == id);
             if (deletedItem != null)
             {
+                var fileName = deletedItem.Image;
+                string dir = "\\images\\";
+                string path = _host.ContentRootPath + dir + fileName;
+                if(System.IO.File.Exists(path))
+                {
+                    System.IO.File.Delete(path);
+                }
                 _context.Animals.Remove(deletedItem);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
