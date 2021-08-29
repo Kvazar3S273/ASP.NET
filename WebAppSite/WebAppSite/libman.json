@@ -14,11 +14,14 @@
     {
       "library": "bootstrap@5.1.0",
       "destination": "wwwroot/lib/bootstrap/"
+    },
+    {
+      "library": "axios@0.21.1",
+      "destination": "wwwroot/lib/axios/"
+    },
+    {
+      "library": "font-awesome@5.15.4",
+      "destination": "wwwroot/lib/font-awesome/"
     }
-  ,
-{
-  "library": "axios@0.21.1",
-  "destination": "wwwroot/lib/axios/"
-}
-]
+  ]
 }
