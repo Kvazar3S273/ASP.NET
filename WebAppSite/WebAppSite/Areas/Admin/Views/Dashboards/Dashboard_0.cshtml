@@ -1,0 +1,305 @@
+﻿@{
+    ViewData["Title"] = "Dashboard v.0";
+}
+<div class="text-center text-dark bg-warning bg-gradient mt-3 mb-3">
+    <br />
+    <h1><b> Панель управління користувачами </b></h1>
+    <br />
+</div>
+<div class="row">
+    <div class="col-1"></div>
+    <div class="col-10">
+        <div class="d-grid gap-4 d-md-block">
+            <button type="button" class="btn btn-success btn-lg px-5">Додати<br> нового користувача</button>
+            <button type="button" class="btn btn-warning btn-lg px-5">Редагувати<br> користувача</button>
+            <button type="button" class="btn btn-danger btn-lg px-5">Видалити<br> користувача</button>
+            <button type="button" class="btn btn-info btn-lg px-5">Переглянути<br> всіх користувачів</button>
+        </div>
+    </div>
+    <div class="col-1"></div>
+</div>
+<hr />
+<div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-striped table-secondary">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Ім'я</th>
+                        <th scope="col">День народження</th>
+                        <th scope="col">Ціна</th>
+                        <th scope="col">Зображення</th>
+                        <th scope="col">Дія</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @*@foreach (var item in Model)*@
+                    @*{*@
+                    <tr>
+                        <th scope="row">@@item.Id</th>
+                        <td>@@item.Name</td>
+                        <td>@@item.BirthDay</td>
+                        <td>@@item.Price</td>
+                        <td>
+                            <img src="/images/@@item.Image" width="150" alt="img" />
+                        </td>
+
+                        <td class="align-middle text-left" style="font-size: 20px">
+
+                            <a asp-action="Edit"
+                               class="fa fa-pencil-square-o text-info text-decoration-none cursor-pointer"
+                               asp-controller="Animal"
+                               asp-route-id="@@item.Id"></a>
+                            <a asp-action="Delete"
+                               class="fa fa-trash-o text-danger text-decoration-none cursor-pointer"
+                               asp-controller="Animal"
+                               asp-route-id="@@item.Id"></a>
+                        </td>
+                    </tr>
+                    @*}*@
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="small-chat-box fadeInRight animated">
+
+    <div class="heading" draggable="true">
+        <small class="chat-date float-right">
+            02.19.2015
+        </small>
+        Small chat
+    </div>
+
+    <div class="content">
+
+        <div class="left">
+            <div class="author-name">
+                Monica Jackson <small class="chat-date">
+                    10:02 am
+                </small>
+            </div>
+            <div class="chat-message active">
+                Lorem Ipsum is simply dummy text input.
+            </div>
+
+        </div>
+        <div class="right">
+            <div class="author-name">
+                Mick Smith
+                <small class="chat-date">
+                    11:24 am
+                </small>
+            </div>
+            <div class="chat-message">
+                Lorem Ipsum is simpl.
+            </div>
+        </div>
+        <div class="left">
+            <div class="author-name">
+                Alice Novak
+                <small class="chat-date">
+                    08:45 pm
+                </small>
+            </div>
+            <div class="chat-message active">
+                Check this stock char.
+            </div>
+        </div>
+        <div class="right">
+            <div class="author-name">
+                Anna Lamson
+                <small class="chat-date">
+                    11:24 am
+                </small>
+            </div>
+            <div class="chat-message">
+                The standard chunk of Lorem Ipsum
+            </div>
+        </div>
+        <div class="left">
+            <div class="author-name">
+                Mick Lane
+                <small class="chat-date">
+                    08:45 pm
+                </small>
+            </div>
+            <div class="chat-message active">
+                I belive that. Lorem Ipsum is simply dummy text.
+            </div>
+        </div>
+
+
+    </div>
+    <div class="form-chat">
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control"> <span class="input-group-btn">
+                <button class="btn btn-primary" type="button">
+                    Send
+                </button>
+            </span>
+        </div>
+    </div>
+
+</div>
+<div id="small-chat">
+
+    <span class="badge badge-warning float-right">5</span>
+    <a href="#" class="open-small-chat">
+        <i class="fa fa-comments"></i>
+
+    </a>
+</div>
+
+
+
+
+@section Scripts {
+
+
+    <environment names="Development">
+        <script src="~/template/lib/flot/jquery.flot.js"></script>
+        <script src="~/template/lib/flot/jquery.flot.tooltip.min.js"></script>
+        <script src="~/template/lib/flot/jquery.flot.resize.js"></script>
+        <script src="~/template/lib/flot/jquery.flot.pie.js"></script>
+        <script src="~/template/lib/flot/jquery.flot.time.js"></script>
+        <script src="~/template/lib/flot/jquery.flot.spline.js"></script>
+        <script src="~/template/lib/sparkline/jquery.sparkline.min.js"></script>
+        <script src="~/template/lib/chartJs/Chart.min.js"></script>
+        <script src="~/template/lib/peity/jquery.peity.js"></script>
+
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/template/lib/flot/jquery.flot.js"></script>
+        <script src="~/template/lib/flot/jquery.flot.tooltip.min.js"></script>
+        <script src="~/template/lib/flot/jquery.flot.resize.js"></script>
+        <script src="~/template/lib/flot/jquery.flot.pie.js"></script>
+        <script src="~/template/lib/flot/jquery.flot.time.js"></script>
+        <script src="~/template/lib/flot/jquery.flot.spline.js"></script>
+        <script src="~/template/lib/sparkline/jquery.sparkline.min.js"></script>
+        <script src="~/template/lib/chartJs/Chart.min.js"></script>
+        <script src="~/template/lib/peity/jquery.peity.min.js"></script>
+    </environment>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(".bar_dashboard").peity("bar", {
+                fill: ["#1ab394", "#d7d7d7"],
+                width: 100
+            })
+
+            $("#sparkline8").sparkline([5, 6, 7, 2, 0, 4, 2, 4, 5, 7, 2, 4, 12, 14, 4, 2, 14, 12, 7], {
+                type: 'bar',
+                barWidth: 8,
+                height: '150px',
+                barColor: '#1ab394',
+                negBarColor: '#c6c6c6'
+            });
+
+            var updatingChart = $(".updating-chart").peity("line", { fill: '#1ab394', stroke: '#169c81', width: 64 })
+
+            setInterval(function () {
+                var random = Math.round(Math.random() * 10)
+                var values = updatingChart.text().split(",")
+                values.shift()
+                values.push(random)
+
+                updatingChart
+                    .text(values.join(","))
+                    .change()
+            }, 1000);
+
+            var data1 = [
+                [0, 4], [1, 8], [2, 5], [3, 10], [4, 4], [5, 16], [6, 5], [7, 11], [8, 6], [9, 11], [10, 30], [11, 10], [12, 13], [13, 4], [14, 3], [15, 3], [16, 6]
+            ];
+            var data2 = [
+                [0, 1], [1, 0], [2, 2], [3, 0], [4, 1], [5, 3], [6, 1], [7, 5], [8, 2], [9, 3], [10, 2], [11, 1], [12, 0], [13, 2], [14, 8], [15, 0], [16, 0]
+            ];
+            $("#flot-dashboard-chart").length && $.plot($("#flot-dashboard-chart"), [
+                data1, data2
+            ],
+                {
+                    series: {
+                        lines: {
+                            show: false,
+                            fill: true
+                        },
+                        splines: {
+                            show: true,
+                            tension: 0.4,
+                            lineWidth: 1,
+                            fill: 0.4
+                        },
+                        points: {
+                            radius: 0,
+                            show: true
+                        },
+                        shadowSize: 2
+                    },
+                    grid: {
+                        hoverable: true,
+                        clickable: true,
+                        tickColor: "#d5d5d5",
+                        borderWidth: 1,
+                        color: '#d5d5d5'
+                    },
+                    colors: ["#1ab394", "#464f88"],
+                    xaxis: {
+                    },
+                    yaxis: {
+                        ticks: 4
+                    },
+                    tooltip: false
+                }
+            );
+
+            var doughnutData = {
+                labels: ["App", "Software", "Laptop"],
+                datasets: [{
+                    data: [300, 50, 100],
+                    backgroundColor: ["#a3e1d4", "#dedede", "#9CC3DA"]
+                }]
+            };
+
+
+            var doughnutOptions = {
+                responsive: false,
+                legend: {
+                    display: false
+                }
+            };
+
+
+            var ctx4 = document.getElementById("doughnutChart").getContext("2d");
+            new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+
+            var doughnutData = {
+                labels: ["App", "Software", "Laptop"],
+                datasets: [{
+                    data: [70, 27, 85],
+                    backgroundColor: ["#a3e1d4", "#dedede", "#9CC3DA"]
+                }]
+            };
+
+
+            var doughnutOptions = {
+                responsive: false,
+                legend: {
+                    display: false
+                }
+            };
+
+
+            var ctx4 = document.getElementById("doughnutChart2").getContext("2d");
+            new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+
+        });
+    </script>
+}

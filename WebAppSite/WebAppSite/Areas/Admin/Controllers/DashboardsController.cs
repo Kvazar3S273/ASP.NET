@@ -9,6 +9,11 @@ namespace WebAppSite.Areas.Admin.Controllers
     [Area("admin")]
     public class DashboardsController : Controller
     {
+
+        public IActionResult Dashboard_0()
+        {
+            return View();
+        }
         public IActionResult Dashboard_1()
         {
             return View();
