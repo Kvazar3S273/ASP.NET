@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAppSite.Domain;
+using WebAppSite.Domain.Entities;
 using WebAppSite.Domain.Entities.Identity;
 using WebAppSite.Models;
 
@@ -67,6 +68,8 @@ namespace WebAppSite
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
+             
+            app.Seeder();
 
             var dir = Path.Combine(Directory.GetCurrentDirectory(), "images");
             if (!Directory.Exists(dir))

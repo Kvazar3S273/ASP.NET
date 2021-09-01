@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -24,11 +25,14 @@ namespace WebAppSite.Models
         [EmailAddress(ErrorMessage = "Не коректна пошта")]
         public string Email { get; set; }
 
-        //
+        
         [Display(Name = "Password")]
         [DataType(DataType.Password)]
         [Required(ErrorMessage = "Неправильний пароль")]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "Обов'язкове поле")]
+        public IFormFile Image { get; set; }
     }
 
     public class UserNavbarInfoViewModel
