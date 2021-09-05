@@ -28,25 +28,36 @@
                 <tbody>
                     @foreach (var user in Model)
                     {
-                        <tr>
-                            <td>@user.UserId</td>
-                            <td>@user.Username</td>
-                            <td>@user.Email</td>
-                            <td>@user.Role</td>
+                    <tr>
+                        <td>@user.UserId</td>
+                        <td>@user.Username</td>
+                        <td>@user.Email</td>
+                        <td>@user.Role</td>
 
-                            <td class="text-right">
-                                <div>
-                                    <a href="Edit/@user.UserId"
-                                       class="text-info">
-                                        <i class="fa fa-pencil-square-o" style="font-size: 20px" aria-hidden="true"></i>
-                                    </a>
-                                    <a href="Delete/@user.UserId"
-                                       class="text-danger">
-                                        <i class="fa fa-trash-o" style="font-size: 20px" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
+                        <td class="text-right">
+                            <div>
+                                <a href="Edit/@user.UserId"
+                                   class="text-info">
+                                    <i class="fa fa-pencil-square-o" style="font-size: 20px" aria-hidden="true"></i>
+                                </a>
+                                <a href="Delete/@user.UserId"
+                                   class="text-danger">
+                                    <i class="fa fa-trash-o" style="font-size: 20px" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </td>
+                        @*<td class="text-right">
+                            <div class="btn-group">
+                                &nbsp;&nbsp;&nbsp;
+                                <a class="text-success"
+                                   href="Edit/@user.UserId">Edit</a>
+                                &nbsp;&nbsp;&nbsp;
+                                <a href="Delete/@user.UserId"
+                                   class="text-success">Deleted</a>
+
+                            </div>
+                        </td>*@
+                    </tr>
                     }
                 </tbody>
                 <tfoot>

@@ -27,7 +27,7 @@ namespace WebAppSite.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Dashboard_0()
         {
-            var userRole = (from user in _context.Users
+            var usersWithRoles = (from user in _context.Users
                                   select new{
                                       UserId = user.Id,
                                       Username = user.UserName,
@@ -37,14 +37,14 @@ namespace WebAppSite.Areas.Admin.Controllers
                                                    equals role.Id
                                                    select role.Name).ToList()})
                                                    .ToList()
-                                                   .Select(p => new RolesViewModel(){
+                                                   .Select(p => new ViewUserRolesModel(){
                                       UserId = p.UserId,
                                       Username = p.Username,
                                       Email = p.Email,
                                       Role = string.Join(",", p.RoleNames)
                                   });
 
-            return await Task.FromResult(View(userRole));
+            return await Task.FromResult(View(usersWithRoles));
         }
 
         //Додавання нового користувача
@@ -93,7 +93,7 @@ namespace WebAppSite.Areas.Admin.Controllers
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(user, "User");
-                    return RedirectToAction("Dashboard_0", "Dashboards");
+                    return RedirectToAction("Dashboard_0", "Dashboards", new { area = "admin" });
                 }
                 else
                 {
@@ -110,71 +110,55 @@ namespace WebAppSite.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             AppUser user = await _userManager.FindByIdAsync(id);
-            EditUserModel editUser = new EditUserModel();
-
-            var userRole = (from us in _context.Users
-                                  select new
-                                  {
-                                      UserId = us.Id,
-                                      Username = us.UserName,
-                                      Email = us.Email,
-                                      RoleNames = (from userRole in us.UserRoles
-                                                   join role in _context.Roles on userRole.RoleId
-                                                   equals role.Id
-                                                   select role.Name).ToList()
-                                  }).ToList().Select(p => new RolesViewModel()
-
-                                  {
-                                      UserId = p.UserId,
-                                      Username = p.Username,
-                                      Email = p.Email,
-                                      Role = string.Join(",", p.RoleNames)
-                                  });
-            foreach (var item in userRole)
+            string userRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+            UserWithRoles editedUser = new UserWithRoles()
             {
-                editUser.RoleUser = item.Role;
-            }
-            if (user != null)
-            {
-                editUser.NameUser = user.NormalizedUserName;
-                editUser.Email = user.Email;
-                editUser.Image = user.ImageProfile;
-                return View(editUser);
-            }
-            else
-                return RedirectToAction("Dashboard_0", "Dashboards");
+                UserId = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Image = user.ImageProfile,
+                Role = userRole
+            };
+            List<string> allRoles = _roleManager.Roles.Select(x => x.Name).ToList();
+            ViewBag.Roles = allRoles;
+            return View(editedUser);
         }
 
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, string email, string image)
+        public async Task<IActionResult> Edit(string id, ChangeRoleModel newRole)
         {
             AppUser user = await _userManager.FindByIdAsync(id);
-            if (user != null)
+            if (!string.IsNullOrEmpty(newRole.OldRole))
             {
-                if (!string.IsNullOrEmpty(email))
-                    user.Email = email;
-                else
-                    ModelState.AddModelError("", "Поле Email не може бути порожнім");
-
-
-                if (user.ImageProfile != null)
-                    user.ImageProfile = image;
-                else
-                    ModelState.AddModelError("", "Виберіть фото");
-
-                if (!string.IsNullOrEmpty(email) && user.ImageProfile != null)
-                {
-                    IdentityResult result = await _userManager.UpdateAsync(user);
-                    if (result.Succeeded)
-                        return RedirectToAction("Dashboard_0", "Dashboards");
-                    else
-                        ModelState.AddModelError("", "Щось не то...");
-                }
+                IdentityResult deleteRole = await _userManager.RemoveFromRoleAsync(user, newRole.OldRole);
             }
+            IdentityResult addRole = await _userManager.AddToRoleAsync(user, newRole.Role);
+
+            if (!string.IsNullOrEmpty(newRole.Email))
+                user.Email = newRole.Email;
             else
-                ModelState.AddModelError("", "Не знайдено такого користувача");
-            return View(user);
+                ModelState.AddModelError("", "Поле Email не може бути порожнім");
+
+            if (!string.IsNullOrEmpty(newRole.UserName))
+                user.UserName = newRole.UserName;
+            else
+                ModelState.AddModelError("", "Поле Name не може бути порожнім");
+            
+            if (user.ImageProfile != null)
+                user.ImageProfile = newRole.Image;
+            else
+                ModelState.AddModelError("", "Поле Photo не може бути порожнім");
+
+            if (!string.IsNullOrEmpty(newRole.Email) && !string.IsNullOrEmpty(newRole.UserName))
+            {
+                IdentityResult result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                    return RedirectToAction("Dashboard_0", "Dashboards", new { area = "admin" });
+                else
+                    ModelState.AddModelError("", "Error");
+            }
+            return RedirectToAction("Dashboard_0", "Dashboards", new { area = "admin" });
         }
 
 
